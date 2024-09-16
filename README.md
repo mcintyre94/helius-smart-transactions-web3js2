@@ -23,6 +23,25 @@ await sendTransactionWithRetry(rpc, rpcSubscriptions, transaction, {
 });
 ```
 
+## Running the example
+
+Create a `.env` file with your Helius API key and a base58 encoded Solana keypair
+
+```
+HELIUS_API_KEY=<your-api-key>
+SOLANA_PRIVATE_KEY=<your-private-key>
+```
+
+Then run the example
+
+```
+npx tsx --env-file=.env index.ts
+```
+
+This will create a transaction with a self-transfer of 0.001 SOL. It will be sent to the network and confirmed, so your account will pay network and priority fees.
+
+If you check your Helius dashboard (on a paid plan), you should see that the (mainnet) transactions are sent with a staked connection, as they use the recommended priority fee.
+
 ## RPC
 
 `rpc.ts` provides a Solana RPC client, that for mainnet includes [Helius' custom `getPriorityFeeEstimate` method](https://docs.helius.dev/solana-rpc-nodes/priority-fee-api). Note that this API is not available on devnet.
@@ -75,3 +94,4 @@ It takes as input:
   - `commitment`: The commitment to use when confirming the transaction. Defaults to `confirmed`.
 
 It sends the transaction and waits 15 seconds for a confirmation. If the transaction is not confirmed, it will be resent. This is repeated until the number of retries is reached or the transaction is confirmed.
+
